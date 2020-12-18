@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <title>
+        Crypto Coin - Start
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../assets/css/loading-animator.css" rel="stylesheet" />
+    <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+</head>
+
+<body class="">
+    <div class="wrapper">
+        <div class="main-panel text-center">
+            <br />
+            <br />
+            <br />
+            <div class="row">
+
+                <div class="col-md-2"></div>
+                <div class="col-md-8 card" style="background-color: #d5d9dd ;">
+
+
+
+                    <div class="card-body">
+                       <!--   <img class="card-img-top" src="./assets/img/Logos/logo_large_black_border_side_by_side.png"> -->
+                       <div class="row">
+                        <img class="card-img-top col-md-4" src="./assets/img/Logos/logo_loop_reversed.gif">
+                       <div class="col-md-8">
+                        <h3 class="card-title bold" style="color: #212529">Willkommen</h3>
+                        <hr />
+                        <!--  Can start   -->
+                        <div id="lbl_click_to_start" style="display: none;">
+                            <p class="card-text" style="color: #212529">
+                                Klicken Sie auf den Button "Start" um loszulegen. Achtung: Es ist nur eine
+                                Demonstration.
+                                Alle Inhalte werden danach gelöscht
+                                <br />
+                                <a href="javascript: start()" style="width: 20rem;" class="btn btn-primary">Start</a>
+                            </p>
+                        </div>
+
+                        <!--  Wait   -->
+                   
+                            <p class="card-text" style="color: #212529" id="lbl_wait" style="display: none;">
+                                Warten Sie bitte bis die Demonstration beginnt.
+                            </p>
+
+                            <div id="loading_animation">
+                                <div class="lds-roller">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                           
+                  
+                       </div>
+                    </div>
+                        
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-2"></div>
+
+            </div>
+
+
+            <footer class="footer">
+                <div id="footer-placeholder"></div>
+            </footer>
+        </div>
+    </div>
+
+
+    <script src="../assets/js/core/jquery.min.js"></script>
+    <!--   Core JS Files   -->
+    <script src="../assets/js/account-manager.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/cookie-manager.js"></script>    
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <!-- Chart JS -->
+    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <!--  Notifications Plugin    -->
+    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../assets/js/black-dashboard.min.js?v=1.0.0"></script>
+
+
+    <script type="text/javascript">
+
+        if (checkCookie("identifier") == true & checkCookie("public_key") == true) {
+            // No search and not logged in
+            window.location.replace("profile.html");
+        }
+
+        function start() {
+            document.getElementById("loading_animation").style = "display: none";
+            $.ajax({
+                url: API_ADRESS + "/create-user",
+                data: JSON.stringify({}),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'GET',
+                success: function (response) {
+                    console.log(response)
+                    if (response["status"] == "ok") {
+                        setCookie("identifier", response["identifier"], 14);
+                        setCookie("public_key", response["public_key"], 14);
+                        window.location.replace("profile.html");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("Etwas ist schiefgelaufen")
+                }
+            });
+        }
+
+        function check_allow_interaction_state() {
+            // Check if allow_interactions
+            $.ajax({
+                url: API_ADRESS + "/get-allow-interactions",
+                data: JSON.stringify({}),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'GET',
+                success: function (response) {
+                    if (response["allow"] == true) {
+                        document.getElementById("lbl_wait").style = "display: none";
+                        document.getElementById("lbl_click_to_start").style = "";
+                        document.getElementById("loading_animation").style = "display: none";
+                        setTimeout(check_allow_interaction_state, 1000);
+                    } else {
+                        document.getElementById("lbl_wait").style = "";
+                        document.getElementById("lbl_click_to_start").style = "display: none";
+                        document.getElementById("loading_animation").style = "";
+                        setTimeout(check_allow_interaction_state, 1000);
+                    }
+                },
+                error: function (error) {
+                    alert("Cannot connect to API. Retry in 5sec")
+                    console.log(error);
+                    setTimeout(check_allow_interaction_state, 5000);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            check_allow_interaction_state();
+        });
+    </script>
+
+</body>
+
+</html>
