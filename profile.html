@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <title>
+    Crypto Coin - Profile Overview
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+</head>
+
+<body class="">
+  <div class="wrapper">
+
+    <div id="sidebar-placeholder"></div>
+    <div class="main-panel">
+      <div id="nav-placeholder"></div>
+
+      <div class="content">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="card card-user">
+              <div class="card-body">
+                <p class="card-text">
+                <div class="author">
+                  <div class="block block-one"></div>
+                  <div class="block block-two"></div>
+                  <div class="block block-three"></div>
+                  <div class="block block-four"></div>
+                  <a href="javascript:void(0)">
+                    <img class="avatar" src="./assets/img/default-avatar.png" id="img_profile_image"
+                      alt="Profile image">
+                    <h5 class="title" id="lbl_name"></h5>
+                  </a>
+                  <p class="description" id="short_description">
+
+                  </p>
+                </div>
+                </p>
+                <div class="card-description" id="long_description">
+
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="button-container">
+                  <div id="profile_links">
+
+                  </div>
+                  <button id="btn_edit_profile" onclick="window.location.replace('edit.html')"
+                    class="btn btn-icon btn-round" style="float: right; display: none">
+                    <i class="tim-icons icon-pencil"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-6">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="header">
+                    <h4 class="card-title">Kontostand <a href="./send.html" class="card-link" style="float: right"
+                        id="link_send_money">
+                        Geld senden</a></h4>
+                    <hr />
+                  </div>
+                  <p class="card-text">
+                  <h1 id="lbl_balance"></h1>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="header">
+                    <h4 class="card-title">Freunde
+                      <a href="./find-friends.html" class="card-link" id="link_find_friends"
+                        style="float: right; display: none">Freunde</a>
+                      <a href="./find-friends.html" class="card-link" id="link_friend"
+                        style="float: right; display: none">Freund hinzufügen</a>
+                    </h4>
+                    <hr />
+                  </div>
+                  <p class="card-text">
+                  <h1 id="lbl_count_friends"></h1>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <div class="card ">
+              <div class="card-header">
+                <h4 class="card-title">Transaktionen</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table tablesorter " id="">
+                    <thead class=" text-primary">
+                      <tr>
+                        <th>
+                          Typ
+                        </th>
+                        <th>
+                          Sender
+                        </th>
+                        <th>
+                          Empfänger
+                        </th>
+                        <th class="text-center">
+                          Betrag
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="table_money_transactions">
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <div id="footer-placeholder"></div>
+      </footer>
+    </div>
+  </div>
+
+
+
+
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/jquery.min.js"></script>
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!-- Chart JS -->
+  <script src="../assets/js/plugins/chartjs.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/black-dashboard.min.js?v=1.0.0"></script>
+  <!--   Custom JS Files   -->
+  <script src="../assets/js/cookie-manager.js"></script>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/account-manager.js"></script>
+  <script src="../assets/js/notifications.js"></script>
+
+  <script type="text/javascript">
+
+    const urlParams = new URLSearchParams(window.location.search);
+    var pub_key, identifier;
+
+
+    if (checkCookie("public_key") == false | checkCookie("identifier") == false) {
+      logged_in = false;
+      if (urlParams.get('pub_key') == null)
+        window.location.replace("index.html");
+
+      pub_key = urlParams.get('pub_key');
+      check_friend();
+
+    } else {
+      // My profile
+      pub_key = getCookie("public_key");
+      identifier = getCookie("identifier");
+      logged_in = true;
+
+
+      if (pub_key != urlParams.get('pub_key') & urlParams.get('pub_key') != null) {
+        pub_key = urlParams.get('pub_key')
+        check_friend();
+      }
+      else {
+        document.getElementById("btn_edit_profile").style = "float: right;";
+        document.getElementById("link_find_friends").style = "float: right;";
+      }
+
+    }
+
+
+    function check_friend() {
+      $(document).ready(function () {
+        document.getElementById("link_friend").style = "float: right;";
+        document.getElementById("link_send_money").href = "./send.html?address=" + pub_key.toString()
+      });
+
+    }
+
+
+    function get_account_data() {
+      $.ajax({
+        url: NODE_ADRESS + "/get/account?q=" + pub_key.toString(),
+        data: JSON.stringify({}),
+        contentType: 'application/json;charset=UTF-8',
+        type: 'GET',
+        success: function (response) {
+          console.log(response)
+          if (response["status"] == "ok") {
+            var acc_obj = response["account"];
+            $('#lbl_name').text(acc_obj["name"].toString() + " - " + acc_obj["location"]);
+            $('#lbl_balance').text((parseInt(acc_obj["balance"] * 100) / 100).toString() + " $");
+            $('#lbl_count_friends').text(acc_obj["friends"].toString());
+            $('#long_description').text(acc_obj["long_description"].toString());
+            $('#short_description').text(acc_obj["short_description"].toString());
+            if (acc_obj["profile_image"] != "")
+              $('#img_profile_image').attr("src", acc_obj["profile_image"].toString());
+
+            // Transactions
+            document.getElementById("table_money_transactions").innerHTML = "";
+            for (var i = acc_obj["transactions"].length - 1; i >= 0; i--) {
+              var trans = acc_obj["transactions"][i];
+
+              var money_transaction_container = document.createElement("div");
+              if (trans["op"] == "transfer") {
+                var container = document.createElement("tr");
+
+                var td = document.createElement("td");
+                if (trans["sender"] == pub_key.toString()) {
+                  td.innerHTML = "Senden";
+                  container.append(td);
+
+                  var td = document.createElement("td");
+                  td.innerHTML = acc_obj["name"];
+                  container.append(td);
+
+                  var td = document.createElement("td");
+                  td.innerHTML = '<a href="/profile.html?pub_key=' + trans["data"]["receiver"] + '">' + trans["data"]["receiver"] + "</a>";
+                  container.append(td);
+
+                } else {
+                  td.innerHTML = "Empfangen";
+                  container.append(td);
+
+                  var td = document.createElement("td");
+                  td.innerHTML = '<a href="/profile.html?pub_key=' + trans["sender"] + '">' + trans["sender"] + "</a>";
+                  container.append(td);
+
+                  var td = document.createElement("td");
+                  td.innerHTML = acc_obj["name"];
+                  container.append(td);
+                }
+
+                var td = document.createElement("td");
+                td.classList += "text-center";
+                td.innerHTML = trans["data"]["amount"] + " $";
+                container.append(td);
+
+                document.getElementById("table_money_transactions").append(container);
+              }
+            }
+
+            // Links
+            document.getElementById("profile_links").innerHTML = "";
+            links = acc_obj["links"]
+            for (var i = 0; i < links.length; i++) {
+              var btn = document.createElement("button");
+              btn.className = "btn btn-icon btn-round";
+              btn.value = links[i]["url"];
+              btn.onclick = function (event) {
+                console.log(event.target.value);
+                var win = window.open(event.target.value, '_blank');
+              };
+
+              className = "fas fa-info"
+              if (links[i]["name"] == "Facebook")
+                className = "fab fa-facebook"
+              if (links[i]["name"] == "Twitter")
+                className = "fab fa-twitter"
+              if (links[i]["name"] == "Twitch")
+                className = "fab fa-twitch"
+              if (links[i]["name"] == "YouTube")
+                className = "fab fa-youtube"
+              if (links[i]["name"] == "Tumblr")
+                className = "fab fa-tumblr"
+              if (links[i]["name"] == "Instagram")
+                className = "fab fa-instagram"
+              if (links[i]["name"] == "Pinterest")
+                className = "fab fa-pinterest"
+              if (links[i]["name"] == "GitHub")
+                className = "fab fa-github"
+              if (links[i]["name"] == "Stack Overflow")
+                className = "fab fa-stack-overflow"
+              if (links[i]["name"] == "Playstation")
+                className = "fab fa-playstation"
+              if (links[i]["name"] == "XBox")
+                className = "fab fa-xbox"
+              if (links[i]["name"] == "Steam")
+                className = "fab fa-steam"
+              if (links[i]["name"] == "Discord")
+                className = "fab fa-discord"
+              if (links[i]["name"] == "Reddit")
+                className = "fab fa-reddit"
+              if (links[i]["name"] == "Telegram")
+                className = "fab fa-telegram"
+              if (links[i]["name"] == "Skype")
+                className = "fab fa-skype"
+              if (links[i]["name"] == "LinkedIn")
+                className = "fab fa-linkedin"
+              if (links[i]["name"] == "Xing")
+                className = "fab fa-xing"
+              if (links[i]["name"] == "Spotify")
+                className = "fab fa-spotify"
+              if (links[i]["name"] == "Sound Cloud")
+                className = "fab fa-soundcloud"
+              if (links[i]["name"] == "PayPal")
+                className = "fab fa-paypal"
+              if (links[i]["name"] == "Amazon")
+                className = "fab fa-amazon"
+              if (links[i]["name"] == "Trip Advisor")
+                className = "fab fa-tripadvisor"
+              if (links[i]["name"] == "Uber")
+                className = "fab fa-uber"
+
+              var i_element = document.createElement('i');
+              i_element.className = className;
+              btn.append(i_element);
+
+              profile_links.append(btn)
+            }
+          } else {
+            alert("Something went wrong");
+          }
+
+          setTimeout(get_account_data, 10000);
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+
+
+    $(document).ready(function () {
+      get_account_data();
+
+    });
+  </script>
+
+</body>
+
+</html>

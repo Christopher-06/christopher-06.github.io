@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <title>
+        Crypto Coin - Profile Overview
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../assets/css/loading-animator.css" rel="stylesheet" />
+    <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+</head>
+
+<body class="">
+    <div class="wrapper">
+        
+        <div id="sidebar-placeholder"></div>
+    <div class="main-panel">
+      <div id="nav-placeholder"></div>
+
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="title">Edit Profile - Alle Angaben hier sind freiwillig und nicht
+                                    erforderlich</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 pr-md-1">
+                                        <div class="form-group">
+                                            <label>Name (max. 50 Zeichen)</label>
+                                            <input type="text" class="form-control" placeholder="Ihr Name" value=""
+                                                id="txt_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 pl-md-1">
+                                        <div class="form-group">
+                                            <label>Herkunft (max. 50 Zeichen)</label>
+                                            <input type="text" class="form-control" placeholder="Wo kommen sie her?"
+                                                value="" id="txt_location">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Profilbild (max. 2000 Zeichen)</label>
+                                            <div class="row">
+                                                <div class="col-md-6 pl-md-1">
+                                                    <input type="text" class="form-control" id="txt_profile_image_url"
+                                                        placeholder="Link zum Bild" value="">
+                                                </div>
+                                                <div class="col-md-4 text-center row">
+                                                    <a class="col-md-10 btn btn-fill btn-primary">
+                                                        <input type="file" id="profile_image_upload" />
+                                                        <h6>Datei auswählen</h6>
+                                                        <!-- Loading Animator -->
+                                                    </a>
+                                                    <div class="col-md-1" id="loading_animation_upload_image"
+                                                        style="display: none;">
+                                                        <div class="lds-roller">
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                            <div></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Kurze Beschreibung (max. 100 Zeichen)</label>
+                                            <input type="text" class="form-control" id="txt_short_desc"
+                                                placeholder="Beruf, Motto, Alter oder sonstiges" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Volle Beschreibung (max. 500 Zeichen)</label>
+                                            <textarea rows="4" cols="80" class="form-control"
+                                                placeholder="Lange Beschreibung von ihnen" id="txt_long_desc"
+                                                value=""></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Links (max. 5)</label>
+                                           
+                                                <div class="row">
+                                                    <div class="btn-group dropup col-md-5">
+                                                        <button type="button" class="btn btn-secondary">Plattform</button>
+                                                        <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu"
+                                                            style="overflow: auto; max-height: 450px">
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Facebook');">Facebook</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Twitter');">Twitter</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Twitch');">Twitch</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('YouTube');">YouTube</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Tumblr');">Tumblr</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Instagram');">Instagram</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Pinterest');">Pinterest</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('GitHub');">GitHub</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Stack Overflow');">Stack
+                                                                Overflow</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Playstation');">Playstation</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('XBox');">XBox</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Steam');">Steam</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Discord');">Discord</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Reddit');">Reddit</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Telegram');">Telegram</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Skype');">Skype</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('LinkedIn');">LinkedIn</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Xing');">Xing</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Spotify');">Spotify</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Sound Cloud');">Sound
+                                                                Cloud</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('PayPal');">PayPal</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Kickstarter');">Kickstarter</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Amazon');">Amazon</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Trip Advisor');">Trip
+                                                                Advisor</a>
+                                                            <a class="dropdown-item"
+                                                                href="javascript: set_plattform_dropdown('Uber');">Uber</a>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 pl-md-1">
+                                                        <input type="text" class="form-control" id="plattform_dropdown_label"
+                                                            placeholder="Name" value="">
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                                <div class="row">
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" id="txt_link_adding"
+                                                        placeholder="Link zum Profil"
+                                                        value="">
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <a href="javascript: add_link()" class="btn btn-fill btn-primary">
+                                                        <i class="fas fa-plus-circle"></i>
+                                                    </a>
+                                                </div></div>
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th>Plattform</th>
+                                                <th style="overflow: hidden; max-width: 10%;">Link</th>
+                                                <th style="max-width: 20px; float:right"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table_links">
+                                            
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                                </form>
+                            </div>
+                            <div class="card-footer">
+                                <a href="javascript: save();" class="btn btn-fill btn-primary">Speichern</a>
+                                <a href="javascript: show_preview();" class="btn btn-fill btn-primary"
+                                    style="float: right">Preview</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12 text-center">
+                            <h1>Preview</h1>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card card-user">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                    <div class="author">
+                                        <div class="block block-one"></div>
+                                        <div class="block block-two"></div>
+                                        <div class="block block-three"></div>
+                                        <div class="block block-four"></div>
+                                        <a href="javascript:void(0)">
+                                            <img class="avatar" src="./assets/img/default-avatar.png" id="preview_profile_image" alt="">
+                                            <h5 class="title" id="preview_name_location"></h5>
+                                        </a>
+                                        <p class="description" id="preview_short_desc">
+
+                                        </p>
+                                    </div>
+                                    </p>
+                                    <div class="card-description" id="preview_long_desc">
+
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="button-container" id="preview_links">
+                                   <!--     <button href="javascript:void(0)" class="btn btn-icon btn-round" rel="tooltip" title="Goto somewhere else" data-placement="bottom">
+                                            <i class="fas fa-info"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
+                                            <i class="fab fa-facebook"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
+                                            <i class="fab fa-twitter"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-twitch"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-youtube"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-tumblr"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-instagram"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-pinterest"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-github"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-stack-overflow"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-playstation"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-xbox"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-steam"></i>
+                                        </button>
+
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-discord"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-reddit"></i>
+                                        </button>
+
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-telegram"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-skype"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-linkedin"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-xing"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-spotify"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-soundcloud"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-paypal"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-kickstarter"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-amazon"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-tripadvisor"></i>
+                                        </button>
+                                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
+                                            <i class="fab fa-uber"></i>
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="list"></div>
+            </div>
+
+            <footer class="footer">
+                <div id="footer-placeholder"></div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
+
+    <!--   Core JS Files   -->
+    <script src="../assets/js/core/jquery.min.js"></script>
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <!-- Chart JS -->
+    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <!--  Notifications Plugin    -->
+    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../assets/js/black-dashboard.min.js?v=1.0.0"></script>
+    <!--   Custom JS Files   -->
+    <script src="../assets/js/cookie-manager.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/account-manager.js"></script>
+    <script src="../assets/js/notifications.js"></script>
+
+    
+    <script type="text/javascript">
+
+        var links = []
+        var pub_key, identifier
+
+
+        if (checkCookie("public_key") == false | checkCookie("identifier") == false)
+            // No search and not logged in
+            window.location.replace("index.html");
+        else {
+            // My profile
+            pub_key = getCookie("public_key");
+            identifier = getCookie("identifier");
+
+        }
+
+        function save() {
+            d = {
+                "identifier": identifier,
+                "name": document.getElementById("txt_name").value,
+                "profile_image": document.getElementById("txt_profile_image_url").value,
+                "short_description": document.getElementById("txt_short_desc").value,
+                "long_description": document.getElementById("txt_long_desc").value,
+                "links": links,
+                "location": document.getElementById("txt_location").value
+            }
+            console.log(d);
+
+            $.ajax({
+                url: API_ADRESS + "/account-settings",
+                data: JSON.stringify(d),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'POST',
+                success: function (response) {
+                    console.log(response)
+                    if (response["status"] == "ok")
+                        window.location.replace("profile.html");
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function show_preview() {
+            document.getElementById("preview_long_desc").innerText = document.getElementById("txt_long_desc").value;
+            document.getElementById("preview_short_desc").innerText = document.getElementById("txt_short_desc").value;
+            document.getElementById("preview_name_location").innerText = document.getElementById("txt_name").value + "-" + document.getElementById("txt_location").value;
+            document.getElementById("preview_profile_image").src = document.getElementById("txt_profile_image_url").value;
+
+           
+            document.getElementById("table_links").innerHTML = "";     
+            document.getElementById("preview_links").innerHTML = "";                   
+            for (var i=0; i < links.length; i++){
+                 // Setup Table
+                var tr = document.createElement('tr');
+
+                var td = document.createElement('td');
+                td.className = "text-center"
+                td.innerText = i + 1;
+                tr.append(td);
+
+                td = document.createElement('td');
+                td.innerText = links[i]["name"]              
+                tr.append(td);
+
+                td = document.createElement('td');
+                td.innerText = links[i]["url"]              
+                tr.append(td);
+
+                // Remove link
+                var i_element = document.createElement('i');
+                i_element.className = "fas fa-trash-alt";
+
+                var a = document.createElement('a'); 
+                a.append(i_element)
+                a.href = "javascript: remove_link(" + i.toString() + ")";               
+                a.className = "btn btn-fill btn-primary";
+                a.style.float ="right";              
+
+                td = document.createElement('td');       
+                td.append(a);       
+                tr.append(td);
+
+                document.getElementById("table_links").append(tr);
+
+                //Set in preview
+                var btn = document.createElement("button");
+                btn.className = "btn btn-icon btn-round";
+                btn.value = links[i]["url"];
+                btn.onclick = function(event){
+                    console.log(event.target.value);
+                    var win = window.open(event.target.value, '_blank');
+                }; 
+
+                className = "fas fa-info"
+                if(links[i]["name"] == "Facebook")
+                    className = "fab fa-facebook"
+                if(links[i]["name"] == "Twitter")
+                    className = "fab fa-twitter"
+                if(links[i]["name"] == "Twitch")
+                    className = "fab fa-twitch"
+                if(links[i]["name"] == "YouTube")
+                    className = "fab fa-youtube"
+                if(links[i]["name"] == "Tumblr")
+                    className = "fab fa-tumblr"
+                if(links[i]["name"] == "Instagram")
+                    className = "fab fa-instagram"
+                if(links[i]["name"] == "Pinterest")
+                    className = "fab fa-pinterest"
+                if(links[i]["name"] == "GitHub")
+                    className = "fab fa-github"
+                if(links[i]["name"] == "Stack Overflow")
+                    className = "fab fa-stack-overflow"
+                if(links[i]["name"] == "Playstation")
+                    className = "fab fa-playstation"
+                if(links[i]["name"] == "XBox")
+                    className = "fab fa-xbox"
+                if(links[i]["name"] == "Steam")
+                    className = "fab fa-steam"
+                if(links[i]["name"] == "Discord")
+                    className = "fab fa-discord"
+                if(links[i]["name"] == "Reddit")
+                    className = "fab fa-reddit"
+                if(links[i]["name"] == "Telegram")
+                    className = "fab fa-telegram"
+                if(links[i]["name"] == "Skype")
+                    className = "fab fa-skype"
+                if(links[i]["name"] == "LinkedIn")
+                    className = "fab fa-linkedin"
+                if(links[i]["name"] == "Xing")
+                    className = "fab fa-xing"
+                if(links[i]["name"] == "Spotify")
+                    className = "fab fa-spotify"
+                if(links[i]["name"] == "Sound Cloud")
+                    className = "fab fa-soundcloud"
+                if(links[i]["name"] == "PayPal")
+                    className = "fab fa-paypal"
+                if(links[i]["name"] == "Amazon")
+                    className = "fab fa-amazon"
+                if(links[i]["name"] == "Trip Advisor")
+                    className = "fab fa-tripadvisor"
+                if(links[i]["name"] == "Uber")
+                    className = "fab fa-uber"
+
+                var i_element = document.createElement('i');
+                i_element.className = className;   
+                btn.append(i_element); 
+
+                preview_links.append(btn)
+            }
+        }
+
+        function set_plattform_dropdown(selected) {
+            document.getElementById("plattform_dropdown_label").value = selected;
+        }
+
+        function add_link() {            
+            if (links.length > 5) {
+                alert("Maximal 5 Links");
+                return;
+            }
+
+            links.push({name : document.getElementById("plattform_dropdown_label").value, url : document.getElementById("txt_link_adding").value})
+
+            document.getElementById("plattform_dropdown_label").value = "";
+            document.getElementById("txt_link_adding").value = "";
+            show_preview();
+        }
+
+        function remove_link(index){
+            links.pop(index)
+
+            show_preview();
+        }
+
+        async function upload_image(evt) {
+            document.getElementById("txt_profile_image_url").disabled = true;
+            document.getElementById("loading_animation_upload_image").style = "";
+
+            var dateien = evt.target.files;
+            for (var i = 0, f; f = dateien[i]; i++) {
+
+                // nur Bild-Dateien
+                if (!f.type.match('image.*')) {
+                    alert("only images");
+                    continue;
+                }
+
+                $.notify({
+                    icon: "tim-icons icon-bell-55",
+                    message: "Ein Bild wird momentan hochgeladen"
+
+                }, {
+                    autoHideDelay: 5000,
+                    style: 'bootstrap',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    }
+                });
+
+                var cid = await addFile(f);
+                document.getElementById("txt_profile_image_url").value = "https://ipfs.io/ipfs/" + cid["string"];
+            }
+            document.getElementById("txt_profile_image_url").disabled = false;
+            document.getElementById("loading_animation_upload_image").style = "display: none";
+        }
+
+        async function addFile(obj) {
+            const node = await Ipfs.create({ repo: 'ipfs-' + Math.random() })
+            const { cid } = await node.add(obj)
+            console.log('successfully stored', cid)
+            return cid;
+        }
+
+
+        $(document).ready(function () {
+            document.getElementById('profile_image_upload').addEventListener('change', upload_image, false);
+            $.ajax({
+                url: NODE_ADRESS + "/get/account?q=" + pub_key.toString(),
+                data: JSON.stringify({}),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'GET',
+                success: function (response) {
+                    console.log(response)
+                    if (response["status"] == "ok") {
+                        acc_obj = response["account"];
+                        document.getElementById("txt_name").value = acc_obj["name"]
+                        document.getElementById("txt_profile_image_url").value = acc_obj["profile_image"]
+                        document.getElementById("txt_short_desc").value = acc_obj["short_description"]
+                        document.getElementById("txt_long_desc").value = acc_obj["long_description"]
+                        document.getElementById("txt_location").value = acc_obj["location"]
+                        links = acc_obj["links"]
+
+                        show_preview();
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+        });
+    </script>
+
+
+
+</body>
+
+</html>

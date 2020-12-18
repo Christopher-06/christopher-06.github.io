@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <title>
+        Crypto Coin - Profile Overview
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+</head>
+
+<body class="">
+    <div class="wrapper">
+         
+        <div id="sidebar-placeholder"></div>
+    <div class="main-panel">
+      <div id="nav-placeholder"></div>
+
+            <div class="content">
+                <div class="card">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="txt_search_bar">
+                                    <h2>Suchen Sie nach Personen, Organisationen oder etwas anderen</h2>
+                                </label>
+                                <hr />
+                                <input type="text" class="form-control" id="txt_search_bar"
+                                    aria-describedby="searchHelp" placeholder="Suchbegriffe...">
+                            </div>
+                            <hr />
+                            <a href="javascript: search_for()" class="btn btn-primary">Los Geht's</a>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body" id="container_search_results">
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <footer class="footer">
+                <div id="footer-placeholder"></div>
+            </footer>
+        </div>
+    </div>
+
+    <div id="container_template_search_results" style="display: none;">
+        <div class="row">
+            <div class="photo col-md-1" style="margin: auto;">
+                <img src="{{PROFILE_IMAGE}}">
+            </div>
+
+            <div class="col-md-11">
+                <div class="col-md-11">
+                    <label>
+                        <h3>{{NAME}}</h3>
+                    </label>
+                    <h6 style="color: black;max-width: 100%; overflow: hidden">{{PUB_KEY}}</h6>
+                </div>
+                <div class="col-md-1" style="float: right">
+                    <a href="./profile.html?pub_key={{PUB_KEY}}" class="btn btn-primary tooltip-test">
+                        <i class="tim-icons icon-send"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+    <!--   Core JS Files   -->
+    <script src="../assets/js/core/jquery.min.js"></script>
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <!-- Chart JS -->
+    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <!--  Notifications Plugin    -->
+    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../assets/js/black-dashboard.min.js?v=1.0.0"></script>
+    <!--   Custom JS Files   -->
+    <script src="../assets/js/cookie-manager.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/account-manager.js"></script>
+    <script src="../assets/js/notifications.js"></script>
+
+    <script type="text/javascript">
+
+        var all_accounts = [];
+        var MAX_SHOW_ACCOUNTS = 5;
+        var search_results_accounts = []
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.get("query") != null)
+            $('#txt_search_bar').val(urlParams.get("query"));
+
+        function get_all_accounts() {
+            $.ajax({
+                url: NODE_ADRESS + "/get/accounts",
+                data: JSON.stringify({}),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'GET',
+                success: function (response) {
+                    console.log(response)
+                    if (response.status == "ok")
+                        all_accounts = response.accounts
+                        search_for();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function setUp_List() {
+            document.getElementById("container_search_results").innerHTML = "";
+
+            for (var i = 0; i < search_results_accounts.length; i++) {
+                index = search_results_accounts[i];
+
+                var template = Handlebars.compile(document.getElementById('container_template_search_results').innerHTML);
+                var profile_image = "./assets/img/default-avatar.png"; 
+                if(all_accounts[index].profile_image != "")
+                    profile_image = all_accounts[index].profile_image
+
+                var json = {
+                    NAME: all_accounts[index].name,
+                    PUB_KEY: all_accounts[index].public_key,
+                    PROFILE_IMAGE: profile_image
+                }
+
+                document.getElementById("container_search_results").innerHTML += template(json);
+
+                if(i>20)
+                    break;
+            }
+        }
+
+        function search_for() {
+            name = $("#txt_search_bar").val()
+            search_results_accounts = [];
+            for (var i = 0; i < all_accounts.length; i++) {
+                // Search for accounts
+                if (all_accounts[i]["name"].toLowerCase().indexOf(name.toLowerCase()) > -1)
+                  {  
+                      search_results_accounts.push(i)
+            }
+        }
+
+            setUp_List();
+        }
+
+        $(document).ready(function () {
+            get_all_accounts();
+        });
+    </script>
+</body>
+
+</html>

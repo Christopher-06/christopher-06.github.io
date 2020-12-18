@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <title>
+        Crypto Coin - Dashboard
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="../assets/demo/demo.css" rel="stylesheet" />
+</head>
+
+<body class="">
+    <div class="wrapper">
+        <div class="main-panel">
+            <div style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
+                <div class="row text-center">
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="header">
+                                    <h4 class="card-title">Blockchain Länge</h4>
+                                    <hr />
+                                </div>
+                                <p class="card-text">
+                                <h1 id="lbl_blockchain_len">0</h1>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="header">
+                                    <h4 class="card-title">Transaktionen pro Block</h4>
+                                    <hr />
+                                </div>
+                                <div class="chart-area">
+                                    <div id="chart_trans_per_block" style="height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="header">
+                                    <h4 class="card-title">Accounts</h4>
+                                    <hr />
+                                </div>
+                                <p class="card-text">
+                                <h1 id="lbl_count_accounts">0</h1>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card card-tasks">
+                        <div class="card-header ">
+                            <h6 class="title d-inline">Letzte Aktionen</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-full-width table-responsive" style="overflow-x: hidden; max-width: 100%">
+                                <table class="table">
+                                    <tbody id="last_actions_container">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card ">
+                        <div class="card-header">
+                            <h4 class="card-title">Accounts</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive"  style="overflow-x: hidden; max-width: 100%">
+                                <table class="table tablesorter">
+                                    <thead class=" text-primary">
+                                        <tr>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Public Key
+                                            </th>
+                                            <th class="text-center">
+                                                Kontostand
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_accounts">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <footer class="footer">
+                <div id="footer-placeholder"></div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Templates -->
+    <div style="display: none">
+        <div id="template_last_action_account_creation">
+            <tr class="last_action_tr">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <p class="title">Account wurde erstellt</p>
+                        <p class="text-muted">Public Key: {{PUB_KEY}}</p>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <i class="tim-icons icon-planet"></i> 
+                    </div>
+                </div>
+            </tr>
+        </div>
+        <div id="template_last_action_account_settings">
+            <tr class="last_action_tr">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <p class="title">Einstellungen für "{{NAME}}" wurden geändert</p>
+                        <p class="text-muted">Public Key: {{PUB_KEY}}</p>
+                        </td>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <i class="tim-icons icon-settings-gear-63"></i> 
+                    </div>
+                </div>
+            </tr>
+        </div>
+        <div id="template_last_action_transfer">
+            <tr class="last_action_tr">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <p class="title">
+                            <a href="./profile.html?pub_key={{SENDER}}" target="_blank">{{SENDER_NAME}}</a>
+                             sendete $ {{AMOUNT}} an 
+                             <a href="./profile.html?pub_key={{RECEIVER}}" target="_blank">jemanden</a></p>
+                        <p class="text-muted">Public Key: {{PUB_KEY}}</p>
+                        </td>
+                    </div>
+
+                    <div class="col-lg-1">
+                        <i class="tim-icons icon-coins"></i> 
+                    </div>
+                </div>
+            </tr>
+        </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="../assets/js/core/jquery.min.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/account-manager.js"></script>
+    <script src="../assets/js/cookie-manager.js"></script>
+    <script src="../assets/js/anti-scientific.js"></script>    
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <!-- Chart JS -->
+    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <!--  Notifications Plugin    -->
+    <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../assets/js/black-dashboard.min.js?v=1.0.0"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['line'] });
+        google.charts.setOnLoadCallback(get_api_data);
+
+        function drawChart_TransPerBlock(transactions_block_data) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Block');
+            data.addColumn('number', 'Transactions');
+
+            for (var i = 0; i < transactions_block_data.length; i++) {
+                data.addRow(transactions_block_data[i]);
+            }
+        
+            var options = {
+                backgroundColor: 'transparent',
+                chartArea: {
+                    backgroundColor: 'transparent',
+                },
+                legend: { position: 'none' }
+            };
+
+            var chart = new google.charts.Line(document.getElementById('chart_trans_per_block'));
+
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
+
+        function set_last_actions(last_actions_data) {
+            while(last_actions_data.length > 33)
+                last_actions_data.shift();
+
+            var container = document.createElement('div');
+            for (var i = 0; i < last_actions_data.length; i++) {
+
+                var json = {
+                    PUB_KEY: last_actions_data[i]["sender"]
+                }
+
+                var template_id = "";
+                if (last_actions_data[i]["op"] == "account_creation")
+                    template_id = "template_last_action_account_creation";
+                if (last_actions_data[i]["op"] == "account_setting") {
+                    json["NAME"] = last_actions_data[i]["data"]["name"];
+                    template_id = "template_last_action_account_settings";
+                }
+                if (last_actions_data[i]["op"] == "transfer") {
+                    json["AMOUNT"] = last_actions_data[i]["data"]["amount"];
+                    template_id = "template_last_action_transfer";
+                    json["SENDER_NAME"] = last_actions_data[i]["name"];
+                    json["SENDER"] = last_actions_data[i]["sender"];
+                    json["RECEIVER"] = last_actions_data[i]["data"]["receiver"];
+                }
+                if (template_id == "")
+                    continue
+
+
+                var template = Handlebars.compile(document.getElementById(template_id).innerHTML);
+                container.innerHTML = template(json) + container.innerHTML;
+            }
+            document.getElementById("last_actions_container").innerHTML = container.innerHTML;
+        }
+
+        function get_data() {
+            $.ajax({
+                url: NODE_ADRESS + "/get/all?max_chain_len=50",
+                data: JSON.stringify({}),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'GET',
+                success: function (response) {
+                    if (response["status"] == "ok") {
+                        $('#lbl_blockchain_len').text(response["chain_len"]);
+
+                        trans_per_block = [];
+                        last_actions_data = []
+                        for (var i = response["chain"].length - 1; i >= 0; i--) {
+                            trans_per_block.push(response["chain"][i]["transactions"].length);
+
+                            for (var j = 0; j < response["chain"][i]["transactions"].length; j++)
+                                last_actions_data.push(response["chain"][i]["transactions"][j])
+                        }
+                        transactions_per_block_data = trans_per_block;
+                        set_last_actions(last_actions_data);
+                    }
+
+                    setTimeout(get_data, 5000);
+                },
+                error: function (error) {
+                    console.log(error);
+                    setTimeout(get_data, 10000);
+                }
+            });
+        }
+
+        function get_accounts(){
+            $.ajax({
+                url: NODE_ADRESS + "/get/accounts",
+                data: JSON.stringify({}),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'GET',
+                success: function (response) {
+                    if (response["status"] == "ok") {
+                        $('#lbl_count_accounts').text(response["accounts"].length);
+
+                        var container = document.createElement('div');
+                        for (var i=0;i<response["accounts"].length; i++){
+                            var tr = document.createElement('tr');
+
+                            var td = document.createElement('td');
+                            td.id = "td_name_" + response["accounts"][i]["public_key"].toString() 
+                            td.innerHTML = "~"
+                            tr.appendChild(td)
+
+                            var td = document.createElement('td');
+                            td.innerHTML = response["accounts"][i]["public_key"].toString() 
+                            tr.appendChild(td)
+
+                            var td = document.createElement('td');
+                            td.id = "td_balance_" + response["accounts"][i]["public_key"].toString() 
+                            td.innerHTML = "$ ~ "
+                            td.classList += "text-center"
+                            tr.appendChild(td)
+
+                            container.appendChild(tr)
+
+                            $.ajax({
+                                url: NODE_ADRESS + "/get/account?q=" + response["accounts"][i]["public_key"].toString() ,
+                                data: JSON.stringify({}),
+                                contentType: 'application/json;charset=UTF-8',
+                                type: 'GET',
+                                success: function (response) {
+                                    if(response["status"] == "ok"){
+                                        var acc = response["account"];
+
+                                        document.getElementById("td_balance_" + acc["pub_key"]).innerHTML = "$ " + acc["balance"];
+                                        document.getElementById("td_name_" + acc["pub_key"]).innerHTML = acc["name"];
+                                    }
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }});
+
+                            if(i > 30)
+                                break;
+                        }
+
+                        document.getElementById("table_accounts").innerHTML = container.innerHTML;
+                    }
+
+                    setTimeout(get_accounts, 30000);
+                },
+                error: function (error) {
+                    console.log(error);
+                    setTimeout(get_accounts, 50000);
+                }
+            });
+        }
+
+        function setup_account_table(accounts){
+            var container = document.createElement('div');
+            for (var i=0;i<accounts.length; i++){
+                var tr = document.createElement('tr');
+
+                var td = document.createElement('td');
+                td.innerHTML = accounts[i]["name"].toString() 
+                tr.appendChild(td)
+
+                var a = document.createElement('a');
+                a.href = "./profile.html?pub_key=" + accounts[i]["public_key"].toString();
+                a.innerText = accounts[i]["public_key"].toString();
+                a.target = "_blank";
+                var td = document.createElement('td');
+                td.appendChild(a)
+                tr.appendChild(td)
+
+                var td = document.createElement('td');
+                td.innerHTML = "$ " + accounts[i]["balance"].toString() 
+                td.classList += "text-center"
+                tr.appendChild(td)
+
+                container.appendChild(tr)
+
+                if(i > 30)
+                    break;
+            }
+
+            document.getElementById("table_accounts").innerHTML = container.innerHTML;
+        }
+
+        function get_api_data(){
+            $.ajax({
+                url: API_ADRESS + "/get-statistics",
+                data: JSON.stringify({}),
+                contentType: 'application/json;charset=UTF-8',
+                type: 'GET',
+                success: function (response) {
+                       console.log(response);
+
+                        $('#lbl_count_accounts').text(response["acc_count"]);
+                        $('#lbl_blockchain_len').text(response["chain_len"]);
+                       drawChart_TransPerBlock(response["transactions_per_block"])
+                       set_last_actions(response["last_actions"]);
+                       setup_account_table(response["accounts"]);
+
+                       setTimeout(get_api_data, 15000);
+                },
+                error: function (error) {
+                    console.log(error);
+                    setTimeout(get_api_data, 15000);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+           // get_data();
+           // get_accounts();
+
+         //  get_api_data();
+        });
+    </script>
+
+</body>
+
+</html>
