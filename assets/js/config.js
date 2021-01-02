@@ -1,5 +1,5 @@
-NODE_ADRESS = "http://192.168.178.31:8000";
-API_ADRESS = "http://192.168.178.31:4999";
+NODE_ADRESS = "http://192.168.178.13:8000";
+API_ADRESS = "http://192.168.178.20:4999";
 
 // Load navbar
 $.get("./assets/templates/navbar.html", function (data) {
