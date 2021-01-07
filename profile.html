@@ -15,6 +15,7 @@
   <!-- Nucleo Icons -->
   <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
   <!-- CSS Files -->
+  <link href="../assets/css/loading-animator.css" rel="stylesheet" />
   <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
 </head>
 
@@ -72,25 +73,22 @@
                     <h4 class="card-title">Kontostand <a href="./send.html" class="card-link" style="float: right"
                         id="link_send_money">
                         Geld senden</a></h4>
-                    <hr />
+
                   </div>
                   <p class="card-text">
                   <h1 id="lbl_balance"></h1>
                   </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-body">
+                  <hr />
                   <div class="header">
                     <h4 class="card-title">Freunde
                       <a href="./find-friends.html" class="card-link" id="link_find_friends"
                         style="float: right; display: none">Freunde</a>
-                      <a href="./find-friends.html" class="card-link" id="link_friend"
+                      <a href="javascript: add_friend()" class="card-link" id="link_friend_add"
                         style="float: right; display: none">Freund hinzufügen</a>
+                      <a href="javascript: add_friend()" class="card-link" id="link_friend_remove"
+                        style="float: right; display: none">Freund entfernen</a>
                     </h4>
-                    <hr />
+
                   </div>
                   <p class="card-text">
                   <h1 id="lbl_count_friends"></h1>
@@ -111,6 +109,9 @@
                   <table class="table tablesorter " id="">
                     <thead class=" text-primary">
                       <tr>
+                        <th>
+
+                        </th>
                         <th>
                           Typ
                         </th>
@@ -141,7 +142,107 @@
     </div>
   </div>
 
+  <!-- Inspect Transaction Modal-->
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="transactionsModal"
+    id="transactionsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="background-color: rgb(131, 131, 131);" id="transactionsModal-Content">
 
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Deine Transaktion:</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <i class="tim-icons icon-simple-remove"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+          <div id="modalTransactions-loading-animation" class="text-center">
+            <div class="lds-roller">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+
+          <div id="modalTransactions-data" style="display: none;">
+            <div class="row">
+              <div class="col-md-1 photo" style="margin: auto">
+                <img src="./assets/img/default-avatar.png" alt="Profile Photo" id="modal-trans-sender-img">
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Sender</label>
+                  <a href="#" id="modal-trans-sender">
+                    <h6 style="color: black; overflow: hidden;">
+                      Du
+                    </h6>
+                    <p></p>
+                    <h6 style="color: black; overflow: hidden;">
+                      der Name
+                    </h6>
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-1 photo" style="margin: auto">
+                <img src="./assets/img/default-avatar.png" alt="Profile Photo" id="modal-trans-receiver-img">
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Empfänger</label>
+                  <a href="#" id="modal-trans-receiver">
+                    <h6 style="color: black; overflow: hidden;">
+                      Du
+                    </h6>
+                    <p></p>
+                    <h6 style="color: black; overflow: hidden;">
+                      der Name
+                    </h6>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Betrag</label>
+                  <h6 style="color: black; overflow: hidden;" id="model-trans-amount">
+                    564 $
+                  </h6>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Zeitstempel</label>
+                  <h6 style="color: black; overflow: hidden;" id="model-trans-timestamp">
+                    25.12.2020 - 13:45:45
+                  </h6>
+                </div>
+              </div>
+            </div>
+            <br /> <br />
+            <div class="row">
+              <div class="col-md-12">
+                <label>Nachricht</label>
+                <h5 style="color: black;" id="model-trans-message">
+                  BlaBlaBla BlaBlaBla BlaBlaBla
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <!--   Core JS Files   -->
@@ -164,7 +265,8 @@
   <script type="text/javascript">
 
     const urlParams = new URLSearchParams(window.location.search);
-    var pub_key, identifier;
+    var pub_key, identifier, my_profile, profile_img;
+    var account_loaded = false;
 
 
     if (checkCookie("public_key") == false | checkCookie("identifier") == false) {
@@ -173,10 +275,10 @@
         window.location.replace("index.html");
 
       pub_key = urlParams.get('pub_key');
-      check_friend();
-
+      document.getElementById("link_send_money").href = "./send.html?address=" + pub_key.toString()
+      my_profile = false;
     } else {
-      // My profile
+      // logged in
       pub_key = getCookie("public_key");
       identifier = getCookie("identifier");
       logged_in = true;
@@ -184,24 +286,81 @@
 
       if (pub_key != urlParams.get('pub_key') & urlParams.get('pub_key') != null) {
         pub_key = urlParams.get('pub_key')
-        check_friend();
+        document.getElementById("link_send_money").href = "./send.html?address=" + pub_key.toString()
+        my_profile = false;
       }
       else {
+        // My profile
         document.getElementById("btn_edit_profile").style = "float: right;";
-        document.getElementById("link_find_friends").style = "float: right;";
+
+        my_profile = true;
       }
 
     }
 
 
-    function check_friend() {
-      $(document).ready(function () {
-        document.getElementById("link_friend").style = "float: right;";
-        document.getElementById("link_send_money").href = "./send.html?address=" + pub_key.toString()
-      });
+    function add_friend() {
+      $.ajax({
+        url: API_ADRESS + "/add-friend?identifier=" + identifier + "&target=" + pub_key,
+        data: JSON.stringify({}),
+        contentType: "application/json;charset=UTF-8",
+        type: "GET",
+        success: function (response) {
+          console.log(response);
+        },
+        error: function (error) {
+          console.log(error);
+          $.notify({
+            icon: "tim-icons icon-bell-55",
+            message: "Ein Fehler ist aufgetreten."
+          }, {
 
+            autoHideDelay: 7000,
+            style: 'bootstrap',
+            placement: {
+              from: "bottom",
+              align: "right"
+            }
+          });
+        },
+      });
     }
 
+    function check_friend(acc) {
+      if (my_profile) {
+        document.getElementById("link_friend_add").style = "float: right;display: none";
+        document.getElementById("link_friend_remove").style = "float: right;display: none";
+        document.getElementById("link_find_friends").style = "float: right;";
+
+      } else {
+        if (logged_in) {
+          document.getElementById("link_find_friends").style = "float: right;display: none";
+
+          for (var i = 0; i < acc.friends.length; i++) {
+            if (acc.friends[i] == getCookie("public_key")) {
+              // I am a friend
+              document.getElementById("link_friend_add").style = "float: right;display: none";
+              document.getElementById("link_friend_remove").style = "float: right;";
+              return;
+            }
+          }
+
+          // If it reached here --> I am not a friend
+          document.getElementById("link_friend_add").style = "float: right;";
+          document.getElementById("link_friend_remove").style = "float: right;display: none";
+
+
+        } else {
+          // disable all
+          document.getElementById("link_friend_add").style = "float: right;display: none";
+          document.getElementById("link_friend_remove").style = "float: right;display: none";
+          document.getElementById("link_find_friends").style = "float: right;display: none";
+        }
+      }
+
+
+
+    }
 
     function get_account_data() {
       $.ajax({
@@ -213,13 +372,24 @@
           console.log(response)
           if (response["status"] == "ok") {
             var acc_obj = response["account"];
+
+
+            if (account_loaded == false) {
+              // first time here
+              check_friend(acc_obj);
+              if (urlParams.get('show_trans') != null)
+                showTransactionModal(urlParams.get('show_trans'));
+            }
+
+
             $('#lbl_name').text(acc_obj["name"].toString() + " - " + acc_obj["location"]);
-            $('#lbl_balance').text((parseInt(acc_obj["balance"] * 100) / 100).toString() + " $");
-            $('#lbl_count_friends').text(acc_obj["friends"].toString());
+            $('#lbl_balance').text((acc_obj["balance"] / 100).toString() + " $");
+            $('#lbl_count_friends').text(acc_obj["friends"].length.toString());
             $('#long_description').text(acc_obj["long_description"].toString());
             $('#short_description').text(acc_obj["short_description"].toString());
             if (acc_obj["profile_image"] != "")
               $('#img_profile_image').attr("src", acc_obj["profile_image"].toString());
+            profile_img = acc_obj["profile_image"];
 
             // Transactions
             document.getElementById("table_money_transactions").innerHTML = "";
@@ -229,6 +399,11 @@
               var money_transaction_container = document.createElement("div");
               if (trans["op"] == "transfer") {
                 var container = document.createElement("tr");
+
+                var td = document.createElement("td");
+                if (my_profile)
+                  td.innerHTML = "<a href='javascript: showTransactionModal(\"" + trans["id"] + "\");'><i class='tim-icons icon-compass-05'></i></a>";
+                container.append(td);
 
                 var td = document.createElement("td");
                 if (trans["sender"] == pub_key.toString()) {
@@ -258,7 +433,7 @@
 
                 var td = document.createElement("td");
                 td.classList += "text-center";
-                td.innerHTML = trans["data"]["amount"] + " $";
+                td.innerHTML = (trans["data"]["amount"] / 100) + " $";
                 container.append(td);
 
                 document.getElementById("table_money_transactions").append(container);
@@ -337,6 +512,7 @@
             alert("Something went wrong");
           }
 
+          account_loaded = true;
           setTimeout(get_account_data, 10000);
         },
         error: function (error) {
@@ -345,10 +521,101 @@
       });
     }
 
+    function showTransactionModal(id) {
+      // Prepare Loading
+      $("#transactionsModal-Content").attr("style", "background-color: rgb(131, 131, 131);");
+      $("#modalTransactions-loading-animation").attr("style", "");
+      $("#modalTransactions-data").attr("style", "display: none");
+
+
+      // Get data
+      $.ajax({
+        url: API_ADRESS + "/get-transaction?identifier=" + identifier + "&id=" + id,
+        data: JSON.stringify({}),
+        contentType: "application/json;charset=UTF-8",
+        type: "GET",
+        success: function (response) {
+
+
+
+          var transaction = response["transaction"];
+
+          if (transaction["sender"] == pub_key) {
+            // I am Sender
+            document.getElementById("modal-trans-sender").href = "#";
+            document.getElementById("modal-trans-sender").children[2].innerText = "Du";
+            document.getElementById("modal-trans-sender").children[0].innerText = "";
+
+            document.getElementById("modal-trans-receiver").href = "/profile.html?pub_key=" + transaction["data"]["receiver"];
+            document.getElementById("modal-trans-receiver").children[2].innerText = transaction["data"]["receiver"];
+
+            if (profile_img != "")
+              document.getElementById("modal-trans-sender-img").src = profile_img;
+
+            // Set Receiver Name
+            document.getElementById("modal-trans-receiver").children[0].innerText = "";
+            $.ajax({
+              url: NODE_ADRESS + "/get/account?q=" + transaction["data"]["receiver"],
+              data: JSON.stringify({}),
+              contentType: "application/json;charset=UTF-8",
+              type: "GET",
+              success: function (response) {
+                if (response["status"] == "ok")
+                  document.getElementById("modal-trans-receiver").children[0].innerText = response["account"]["name"];
+
+                if (response["account"]["profile_image"] != "")
+                  document.getElementById("modal-trans-receiver-img").src = response["account"]["profile_image"];
+              },
+            });
+          } else {
+            // I am Receiver
+            document.getElementById("modal-trans-sender").href = "/profile.html?pub_key=" + transaction["sender"];
+            document.getElementById("modal-trans-sender").children[2].innerText = transaction["sender"];
+
+            document.getElementById("modal-trans-receiver").href = "#";
+            document.getElementById("modal-trans-receiver").children[2].innerText = "Du";
+            document.getElementById("modal-trans-receiver").children[0].innerText = "";
+
+            if (profile_img != "")
+              document.getElementById("modal-trans-receiver-img").src = profile_img;
+
+            document.getElementById("modal-trans-sender").children[0].innerText = "";
+            $.ajax({
+              url: NODE_ADRESS + "/get/account?q=" + transaction["sender"],
+              data: JSON.stringify({}),
+              contentType: "application/json;charset=UTF-8",
+              type: "GET",
+              success: function (response) {
+                if (response["status"] == "ok")
+                  document.getElementById("modal-trans-sender").children[0].innerText = response["account"]["name"];
+
+                if (response["account"]["profile_image"] != "")
+                  document.getElementById("modal-trans-sender-img").src = response["account"]["profile_image"];
+              },
+            });
+          }
+
+          document.getElementById("model-trans-amount").innerText = (transaction["data"]["amount"] / 100).toString() + " $";
+          document.getElementById("model-trans-timestamp").innerText = transaction["timestamp"].replace(" ", " - ");
+          document.getElementById("model-trans-message").innerText = response["message"];
+
+
+          $("#transactionsModal-Content").attr("style", "");
+          $("#modalTransactions-loading-animation").attr("style", "display: none");
+          $("#modalTransactions-data").attr("style", "");
+          console.log(response);
+        },
+        error: function (error) {
+          console.log(error);
+          alert("Etwas ist schiefgelaufen")
+        },
+      });
+
+      $('#transactionsModal').modal('show')
+    }
 
     $(document).ready(function () {
       get_account_data();
-
     });
   </script>
 
