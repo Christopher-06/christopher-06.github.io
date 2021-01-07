@@ -81,8 +81,8 @@
                             <div class="card">
                                 <div class="card-body">
                                     <p class="card-text">
-                                    <h4> Sende hier Geld zu anderen Personen. Aber passen Sie auf: Alle Zahlung sind
-                                        nicht umkehrbar</h4>
+                                    <h4> Sende hier Geld zu anderen Personen. Aber pass auf auf: Alle Zahlung sind
+                                        unumkehrbar</h4>
                                     </p>
                                 </div>
                             </div>
@@ -136,6 +136,18 @@
                                         id="txt_message" value=""></textarea>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input id="checkbox-encrypt-message" class="form-check-input" type="checkbox" value="" checked>
+                                    Nachricht verschlüsseln
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>  </div>
                         </div>
                         </form>
                     </div>
@@ -244,7 +256,7 @@
                 return;
             }
             if(parseFloat(amount) <= 0){
-                alert("Sie haben müssen einen Betrag von über 0 geben.")
+                alert("Sie haben müssen einen Betrag von mindestens 0.1 eingeben.")
                 return;
             }
 
@@ -252,9 +264,15 @@
             var d = {
                 "identifier": identifier,
                 "receiver": address,
-                "amount": amount,
-                "message": message
+                "amount": parseFloat(amount),
+                "message": message,
+                "encrypted" : true
             };
+
+
+            if(document.getElementById("checkbox-encrypt-message").checked == false)
+                d["encrypted"] = "false";
+            
 
             $.ajax({
                 url: API_ADRESS + "/send-money",
@@ -263,9 +281,10 @@
                 type: 'POST',
                 success: function (response) {
                     console.log(response)
+                    if(response["status"] == "ok"){
                     $.notify({
                         icon: "tim-icons icon-bell-55",
-                        message: "Sie haben erfolgreich Geld überwiesen - Viel Spaß damit"
+                        message: "Sie haben erfolgreich Geld überwiesen."
                     }, {
 
                         autoHideDelay: 5000,
@@ -274,7 +293,9 @@
                             from: "bottom",
                             align: "right"
                         }
-                    });
+                    });}else{
+                        alert("Etwas ist schiefgelaufen");
+                    }
 
                     address = $('#txt_address').val("");
                     amount = $('#txt_amount').val("");
@@ -310,13 +331,13 @@
                     if (response["status"] == "ok") {
                         acc_obj = response["account"];
                         $('#lbl_name').text(acc_obj["name"].toString() + " - " + acc_obj["location"]);
-                        document.getElementById('lbl_balance').innerHTML = ((parseInt(acc_obj["balance"] * 100) / 100).toString() + " $");
+                        document.getElementById('lbl_balance').innerHTML = (acc_obj["balance"] / 100).toString() + " $";
                         $('#lbl_count_friends').text(acc_obj["friends"].toString());
                         $('#long_description').text(acc_obj["long_description"].toString());
                         $('#short_description').text(acc_obj["short_description"].toString());
                         if(acc_obj["profile_image"] != "")
                             $('#img_profile_image').attr("src", acc_obj["profile_image"].toString());
-                        max_balance = acc_obj["balance"];
+                        max_balance = acc_obj["balance"] / 100;
 
                         $('#link_max_amount').text("Max. $" + max_balance.toString());
                     }
