@@ -235,7 +235,7 @@
                     template_id = "template_last_action_account_settings";
                 }
                 if (last_actions_data[i]["op"] == "transfer") {
-                    json["AMOUNT"] = last_actions_data[i]["data"]["amount"];
+                    json["AMOUNT"] = parseInt(last_actions_data[i]["data"]["amount"]) / 100;
                     template_id = "template_last_action_transfer";
                     json["SENDER_NAME"] = last_actions_data[i]["name"];
                     json["SENDER"] = last_actions_data[i]["sender"];
@@ -364,7 +364,7 @@
                 tr.appendChild(td)
 
                 var td = document.createElement('td');
-                td.innerHTML = "$ " + accounts[i]["balance"].toString() 
+                td.innerHTML = "$ " + (accounts[i]["balance"] / 100).toString() 
                 td.classList += "text-center"
                 tr.appendChild(td)
 
